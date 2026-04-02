@@ -1,39 +1,35 @@
-import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
-import SharedModule from 'app/shared/shared.module';
-import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/auth/account.model';
+import { Component, OnInit } from '@angular/core';
+import { TaskService } from 'app/entities/task/service/task.service';
+import { ITaskDashboardItem } from './task-dashboard-item.model';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'jhi-home',
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
-  imports: [SharedModule, RouterModule],
+  styleUrls: ['./home.component.scss'],
 })
-export default class HomeComponent implements OnInit, OnDestroy {
-  account = signal<Account | null>(null);
+export class HomeComponent implements OnInit {
+  tasks: ITaskDashboardItem[] = [];
+  isLoading = false;
 
-  private readonly destroy$ = new Subject<void>();
-
-  private readonly accountService = inject(AccountService);
-  private readonly router = inject(Router);
+  constructor(private taskService: TaskService) {}
 
   ngOnInit(): void {
-    this.accountService
-      .getAuthenticationState()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(account => this.account.set(account));
+    this.loadTasksForCurrentUser();
   }
 
-  login(): void {
-    this.router.navigate(['/login']);
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  loadTasksForCurrentUser(): void {
+    this.isLoading = true;
+    this.taskService.getTasksForCurrentUser().subscribe(
+      (res: HttpResponse<ITaskDashboardItem[]>) => {
+        this.isLoading = false;
+        this.tasks = res.body ?? [];
+      },
+      () => {
+        this.isLoading = false;
+        // Handle error, e.g., display a toast notification
+        console.error('Failed to load tasks for current user.');
+      }
+    );
   }
 }
