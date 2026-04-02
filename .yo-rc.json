@@ -1,0 +1,20 @@
+{
+  "generator-jhipster": {
+    "applicationType": "monolith",
+    "authenticationType": "jwt",
+    "baseName": "taskfollowyamzy",
+    "buildTool": "maven",
+    "clientFramework": "angular",
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "entities": ["Project", "Member", "Status", "Task"],
+    "jhipsterVersion": "8.11.0",
+    "jwtSecretKey": "Yzc5OTU4MzFiZmE3YjliNTk2MmFhNzI5MTczY2Q4ODdmYTE2YmMwNGRlMTRjOTNkZjc3YTFjODkwZDYzMjFiNWE3Yjg0MTJkYzBmYTI1MzYyODg4YTI0MzdlOTc0NmRmZjE4NWJjNjFkZjk4ZTE0YWZkYmFlZGE2NjkyMmQ4MDE=",
+    "languages": ["en"],
+    "lastLiquibaseTimestamp": 1775159426000,
+    "nativeLanguage": "en",
+    "packageName": "com.taskflow",
+    "prodDatabaseType": "postgresql",
+    "serverPort": "9000"
+  }
+}

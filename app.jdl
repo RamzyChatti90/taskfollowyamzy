@@ -2,58 +2,54 @@ application {
   config {
     baseName taskfollowyamzy
     applicationType monolith
-    packageName com.taskflow
     authenticationType jwt
     buildTool maven
     clientFramework angular
     databaseType sql
     devDatabaseType h2Disk
     prodDatabaseType postgresql
-    enableTranslation Boolean
-    languages [en, fr],
-    nativeLanguage fr
+    packageName com.taskflow
     serverPort 9000
   }
   entities *
 }
 
-enum Priority {
-    LOW
-    MEDIUM
-    HIGH
-    URGENT
+entity Project {
+  name String required minlength(2) maxlength(100)
+  description TextBlob
+  startDate LocalDate
+  endDate LocalDate
 }
 
-enum Status {
-    TODO
-    IN_PROGRESS
-    DONE
-    BLOCKED
+entity Member {
+  login String required unique minlength(4) maxlength(50) pattern(/^[a-zA-Z0-9]*$/)
+  firstName String maxlength(50)
+  lastName String maxlength(50)
+  email String required unique minlength(5) maxlength(254) pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+}
+
+entity Status {
+  name String required unique minlength(2) maxlength(50)
 }
 
 entity Task {
-    title String required
-    description String
-    priority Priority
-    status Status
-    dueDate LocalDate
-    createdAt Instant
-}
-
-entity Category {
-    name String required
-    color String
-    icon String
-}
-
-entity Comment {
-    content String required
-    createdAt Instant
+  title String required minlength(2) maxlength(200)
+  description TextBlob
+  dueDate LocalDate
+  priority Integer min(1) max(10)
+  completed Boolean
 }
 
 relationship ManyToOne {
-    Task{assignee(login)} to User with builtInEntity
-    Task{category(name)} to Category
-    Comment{task(title)} to Task
-    Comment{author(login)} to User with builtInEntity
+  Task{project} to Project
+  Task{assignedTo} to Member
+  Task{status} to Status
 }
+
+relationship ManyToMany {
+  Project{members} to Member{projects}
+}
+
+dto * with mapstruct
+service * with serviceImpl
+paginate Project, Task, Member, Status with pagination
