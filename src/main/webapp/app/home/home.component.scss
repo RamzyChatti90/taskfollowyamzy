@@ -1,23 +1,124 @@
-/* ==========================================================================
-Main page styles
-========================================================================== */
+.task-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background-color: var(--jhi-card-bg); // Use JHipster's default card background
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 
-.hipster {
-  display: inline-block;
-  width: 347px;
-  height: 497px;
-  background: url('../../content/images/jhipster_family_member_2.svg') no-repeat center top;
-  background-size: contain;
+  h2 {
+    grid-column: 1 / -1;
+    color: var(--jhi-primary);
+    margin-bottom: 1rem;
+    text-align: center;
+  }
 }
 
-/* wait autoprefixer update to allow simple generation of high pixel density media query */
-@media only screen and (-webkit-min-device-pixel-ratio: 2),
-  only screen and (-moz-min-device-pixel-ratio: 2),
-  only screen and (-o-min-device-pixel-ratio: 2/1),
-  only screen and (min-resolution: 192dpi),
-  only screen and (min-resolution: 2dppx) {
-  .hipster {
-    background: url('../../content/images/jhipster_family_member_2.svg') no-repeat center top;
-    background-size: contain;
+.task-card {
+  background-color: var(--jhi-card-bg);
+  border: 1px solid var(--jhi-border-color);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .task-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--jhi-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .task-description {
+    font-size: 0.9rem;
+    color: var(--jhi-text-secondary);
+    margin-bottom: 1rem;
+    flex-grow: 1; // Allow description to take up available space
+  }
+
+  .task-status {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #fff;
+    text-align: center;
+    align-self: flex-end; // Align status to the bottom right
+  }
+
+  // Status specific styles
+  &.status-a-faire {
+    border-left: 5px solid #6c757d; /* Grey */
+    .task-status {
+      background-color: #6c757d;
+    }
+  }
+
+  &.status-en-cours {
+    border-left: 5px solid #ffc107; /* Yellow/Orange */
+    .task-status {
+      background-color: #ffc107;
+      color: #343a40; // Darker text for better contrast on yellow
+    }
+  }
+
+  &.status-terminee {
+    border-left: 5px solid #28a745; /* Green */
+    .task-status {
+      background-color: #28a745;
+    }
+  }
+
+  &.status-annulee {
+    border-left: 5px solid #dc3545; /* Red */
+    .task-status {
+      background-color: #dc3545;
+    }
+  }
+
+  // Add more statuses if necessary, e.g.,
+  &.status-en-attente {
+    border-left: 5px solid #17a2b8; /* Cyan */
+    .task-status {
+      background-color: #17a2b8;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .task-dashboard {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .task-card {
+    padding: 0.8rem 1rem;
+  }
+
+  .task-title {
+    font-size: 1.1rem;
+  }
+
+  .task-description {
+    font-size: 0.85rem;
+  }
+
+  .task-status {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.6rem;
   }
 }
