@@ -20,6 +20,7 @@ import { TaskDeleteDialogComponent } from '../delete/task-delete-dialog.componen
 @Component({
   selector: 'jhi-task',
   templateUrl: './task.component.html',
+  standalone: true, // Added for JHipster 7+ standalone components
   imports: [RouterModule, FormsModule, SharedModule, SortDirective, SortByDirective, FormatMediumDatePipe, ItemCountComponent],
 })
 export class TaskComponent implements OnInit {
@@ -41,7 +42,9 @@ export class TaskComponent implements OnInit {
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
 
-  trackId = (item: ITask): number => this.taskService.getTaskIdentifier(item);
+  // Correction apportée ici pour résoudre les erreurs TS2322 et TS2445
+  // La fonction trackId doit retourner un nombre et ne doit pas accéder à une méthode protégée du service.
+  trackId = (item: ITask): number => item.id ?? -1;
 
   ngOnInit(): void {
     this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
